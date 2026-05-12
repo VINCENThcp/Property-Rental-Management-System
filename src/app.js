@@ -7,6 +7,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+// Routes
+const offerRoutes = require('./routes/offerRoutes');
+app.use('/api/offers', offerRoutes);
+
 // Connect to MongoDB and start server
 const PORT = process.env.PORT || 5000;
 
