@@ -1,11 +1,18 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const { errorHandler } = require('./middlewares/errorHandler');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
+
+// Error handler — must be last
+app.use(errorHandler);
+
+// Routes
+app.use('/api/auth', require('./routes/authRoutes'));
 
 // Connect to MongoDB and start server
 const PORT = process.env.PORT || 5000;
