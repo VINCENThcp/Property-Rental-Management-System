@@ -1,0 +1,39 @@
+const propertyService = require('../services/propertyService');
+
+// Handles adding a new property
+const addProperty = async (req, res, next) => {
+    try {
+        // Calls the service function you just wrote
+        const property = await propertyService.createProperty(req.body);
+        
+        // Returns 201 Created status code as required
+        res.status(201).json({
+            status: 'success',
+            message: 'Property added successfully',
+            data: property
+        });
+    } catch (error) {
+        // Passes any errors to the centralized error handler
+        next(error); 
+    }
+};
+
+// Handles fetching all available properties
+const getProperties = async (req, res, next) => {
+    try {
+        const properties = await propertyService.getAvailableProperties();
+        
+        res.status(200).json({
+            status: 'success',
+            results: properties.length,
+            data: properties
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = {
+    addProperty,
+    getProperties
+};
