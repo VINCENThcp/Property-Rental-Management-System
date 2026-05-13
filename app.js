@@ -8,13 +8,14 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-// Error handler — must be last
-app.use(errorHandler);
-
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/bookings', require('./routes/bookingRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 
-// Connect to MongoDB and start server
+// Error handler
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGO_URI)
