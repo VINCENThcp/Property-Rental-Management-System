@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const {
-  register,
-  login,
   getMe,
   getAllUsers,
   getUserById,
@@ -11,29 +9,9 @@ const {
   deleteUser,
   changePassword,
 } = require("../controllers/userController");
+const { protect } = require("../middlewares/authMiddleware");
+const { authorize } = require("../middlewares/roleMiddleware");
 
-// NOTE: Your team should implement these two middleware functions:
-//   protect  — verifies the JWT and attaches req.user
-//   adminOnly — checks that req.user.role === "admin"
-const { protect, adminOnly } = require("../middlewares/authMiddleware");
-
-// ─────────────────────────────────────────────
-//  Public Routes
-// ─────────────────────────────────────────────
-
-/**
- * @route   POST /api/users/register
- * @desc    Register a new user account
- * @access  Public
- */
-router.post("/register", register);
-
-/**
- * @route   POST /api/users/login
- * @desc    Authenticate user and receive a JWT token
- * @access  Public
- */
-router.post("/login", login);
 
 // ─────────────────────────────────────────────
 //  Private Routes (logged-in users)
@@ -69,27 +47,27 @@ router.put("/me/change-password", protect, changePassword);
  * @desc    Get all users (supports ?role=tenant | landlord | admin filter)
  * @access  Private/Admin
  */
-router.get("/", protect, adminOnly, getAllUsers);
+router.get("/", protect, authorize('admin'), getAllUsers);
 
 /**
  * @route   GET /api/users/:id
  * @desc    Get a single user by their ID
  * @access  Private/Admin
  */
-router.get("/:id", protect, adminOnly, getUserById);
+router.get("/:id", protect, authorize('admin'), getUserById);
 
 /**
  * @route   PUT /api/users/:id
  * @desc    Admin update any user's details
  * @access  Private/Admin
  */
-router.put("/:id", protect, adminOnly, updateUser);
+router.put("/:id", protect, authorize('admin'), updateUser);
 
 /**
  * @route   DELETE /api/users/:id
  * @desc    Delete a user account
  * @access  Private/Admin
  */
-router.delete("/:id", protect, adminOnly, deleteUser);
+router.delete("/:id", protect, authorize('admin'), deleteUser);
 
 module.exports = router;
