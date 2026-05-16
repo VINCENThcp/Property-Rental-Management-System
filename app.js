@@ -16,6 +16,8 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/properties', require('./routes/propertyRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/complaints', require('./routes/complaintRoutes'));
+const offerRoutes = require('./routes/offerRoutes');
+app.use('/api/offers', offerRoutes);
 
 // Connect to MongoDB and start server
 const PORT = process.env.PORT || 5000;
