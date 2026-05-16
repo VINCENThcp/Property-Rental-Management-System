@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const paymentRoutes = require('./routes/paymentRoutes');
 const { errorHandler } = require('./middlewares/errorHandler');
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(errorHandler);
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/properties', require('./routes/propertyRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/complaints', require('./routes/complaintRoutes'));
 
 // Connect to MongoDB and start server
