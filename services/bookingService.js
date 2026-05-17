@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Booking = require("../models/booking");
-const Property = require("../models/property");// add property model here after craetion
+const Property = require("../models/Property");// add property model here after craetion
 const Offer = require("../models/offer");// add offers model here after creation
 const isValidId = (id) => mongoose.Types.ObjectId.isValid(id);
 
@@ -83,7 +83,7 @@ const createBooking = async ({ propertyId, tenantId, startDate, endDate, notes }
   });
 
   if (acceptedOffer) {
-    pricePerDay = acceptedOffer.offeredPrice;
+    pricePerDay = acceptedOffer.amount;
   }
 
   // 6. Auto-calculate total price
@@ -123,7 +123,7 @@ const getBookingById = async (bookingId, userId, role) => {
     .populate("property", "address type price landlord")
     .populate("tenant", "name email phone");
 
-  if (!isValidId(booking)) {
+  if (!booking) {
     const error = new Error("Booking not found");
     error.statusCode = 404;
     throw error;
@@ -146,7 +146,7 @@ const getBookingById = async (bookingId, userId, role) => {
 const confirmBooking = async (bookingId, userId, role) => {
   const booking = await Booking.findById(bookingId).populate("property");
 
-  if (!isValidId(booking)) {
+  if (!booking) {
     const error = new Error("Booking not found");
     error.statusCode = 404;
     throw error;
@@ -179,7 +179,7 @@ const confirmBooking = async (bookingId, userId, role) => {
 const cancelBooking = async (bookingId, userId, role) => {
   const booking = await Booking.findById(bookingId);
 
-  if (!isValidId(booking)) {
+  if (booking) {
     const error = new Error("Booking not found");
     error.statusCode = 404;
     throw error;

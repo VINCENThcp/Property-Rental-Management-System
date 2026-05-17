@@ -1,4 +1,3 @@
-const { validationResult } = require("express-validator");
 const bookingService = require("../services/bookingService");
 
 /**
@@ -7,13 +6,8 @@ const bookingService = require("../services/bookingService");
  */
 const createBooking = async (req, res, next) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, errors: errors.array() });
-    }
-
     const { propertyId, startDate, endDate, notes } = req.body;
-    const tenantId = req.user._id;
+    const tenantId = req.user.id;
 
     const booking = await bookingService.createBooking({
       propertyId,
@@ -39,7 +33,7 @@ const createBooking = async (req, res, next) => {
  */
 const getMyBookings = async (req, res, next) => {
   try {
-    const bookings = await bookingService.getMyBookings(req.user._id);
+    const bookings = await bookingService.getMyBookings(req.user.id);
 
     return res.status(200).json({
       success: true,
@@ -59,7 +53,7 @@ const getBookingById = async (req, res, next) => {
   try {
     const booking = await bookingService.getBookingById(
       req.params.id,
-      req.user._id,
+      req.user.id,
       req.user.role
     );
 
@@ -80,7 +74,7 @@ const confirmBooking = async (req, res, next) => {
   try {
     const booking = await bookingService.confirmBooking(
       req.params.id,
-      req.user._id,
+      req.user.id,
       req.user.role
     );
 
@@ -102,7 +96,7 @@ const cancelBooking = async (req, res, next) => {
   try {
     const booking = await bookingService.cancelBooking(
       req.params.id,
-      req.user._id,
+      req.user.id,
       req.user.role
     );
 
