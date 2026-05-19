@@ -4,7 +4,7 @@ const offerService = require('../services/offerService');
 const makeOffer = async (req, res, next) => {
     try {
         // Accepts tenant from req.body.tenant or req.user.id if auth middleware is used
-        const tenantId = req.body.tenant || (req.user ? req.user.id : null); 
+        const tenantId = req.user.id; 
         if (!tenantId) {
             return res.status(400).json({ status: 'fail', message: 'Tenant ID is required' });
         }

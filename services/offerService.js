@@ -1,4 +1,4 @@
-const Offer = require('../models/Offer');
+const Offer = require('../models/offer');
 
 // 1. Create offer accepting tenant ID
 const createOffer = async (offerData, tenantId) => {

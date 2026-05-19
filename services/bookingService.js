@@ -179,7 +179,7 @@ const confirmBooking = async (bookingId, userId, role) => {
 const cancelBooking = async (bookingId, userId, role) => {
   const booking = await Booking.findById(bookingId);
 
-  if (booking) {
+  if (!booking) {
     const error = new Error("Booking not found");
     error.statusCode = 404;
     throw error;
